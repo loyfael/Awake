@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AwakeServer.CoreServices.Encryption
 {
-    internal class KeyGenerator
+    internal class ClientKeyGenerator
     {
     }
 }

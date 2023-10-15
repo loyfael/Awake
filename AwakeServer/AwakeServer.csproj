@@ -8,8 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="DatabaseServices\" />
-    <Folder Include="NewFolder\" />
+    <Folder Include="NetworkServices\NewFolder\" />
   </ItemGroup>
 
 </Project>
