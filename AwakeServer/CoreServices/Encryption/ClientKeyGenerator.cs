@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AwakeServer.CoreServices.Encryption
+namespace Awake.CoreServices.Encryption
 {
     internal class ClientKeyGenerator
     {

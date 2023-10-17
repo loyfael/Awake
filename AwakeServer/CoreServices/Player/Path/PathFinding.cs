@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AwakeServer.CoreServices.Player.Path
+namespace Awake.CoreServices.Player.Path
 {
     internal class PathFinding
     {

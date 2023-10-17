@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AwakeServer.DatabaseServices.Authentication
+namespace Awake.DatabaseServices.Authentication
 {
     internal class PlayerAuthentication
     {

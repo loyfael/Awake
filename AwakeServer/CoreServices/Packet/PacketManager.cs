@@ -1,10 +1,11 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Awake.NetworkServices;
 
-namespace AwakeServer.CoreServices.Packet
+namespace Awake.CoreServices.Packet
 {
     internal class PacketManager
     {
