@@ -1,0 +1,351 @@
+"w" // World
+    "D"  // Dungeon (=episode)
+        "C"     this.aks.Dungeon.onDungeonCreation(sData.substr(3));
+        "I"     this.aks.Dungeon.onDungeonInvite(sData.substr(3));
+        "i"     this.aks.Dungeon.onDungeonInvitation(sData.substr(3));
+        "S"     this.aks.Dungeon.onDungeonStart(sData.substr(3));
+        "J"     this.aks.Dungeon.onJoin(!bError, sData.substr(4));
+        "V"     this.aks.Dungeon.onLeave(); com.ankamagames.tools.Logger.out("[wtf]WG Quittage d\'une équipe", "dofus.aks.DataProcessor::postProcess", "E:\\My_Work\\WLG2\\WG2\\client\\DofusClient\\classes/dofus/aks/DataProcessor.as", 77);
+        "M"     this.aks.Dungeon.onMemberMovement(sData.substr(3));
+        "s"     this.aks.Dungeon.onPlayerStatusChanged(sData.substr(3));
+        "W"     this.aks.Dungeon.onWin(sData.substr(3));
+        "E"     this.aks.Dungeon.onError(sData.substr(3));
+    "E" // Effect (AudioManager)
+        "S"     dofus.sounds.AudioManager.getInstance().playEffect(Number(sData.substr(3)));
+    "C" // Craft (Cookbook)
+        "G"     this.api.ui.getUIComponent("Craft").onCookbookData(sData.substr(4));
+    "H" // Harvest
+    "F"
+        "C" // Get player colors && update Banner Illustration (?)
+    "r" // run cinematics
+    "A" // Achievements
+        "L"     this.aks.Achievements.onList(sData.substr(3));
+        "N"     this.aks.Account.onNewAchievement(sData.substr(3));
+    "T" // Title ?
+        "L"     this.api.ui.getUIComponent("StatsJob").onTitleList(sData.substr(3));
+        "A"     this.api.kernel.showMessage(undefined, this.api.lang.getText("NEW_TITLE", [this.api.lang.getTitle(Number(sData.substr(3))).t]), "INFO_CHAT");
+    "L" // Ladder
+        "i"     this.aks.Ladder.onGetInfo(sData.substr(3));
+        "l"     this.aks.Ladder.onInitList(sData.substr(3));
+        "p"     this.aks.Ladder.onGetList(sData.substr(3));
+        "e"     this.aks.Ladder.onError();
+        "v"     this.aks.Ladder.onEmpty();
+    "P" // PVP Battle
+        "i"     // Nop
+        "I"     this.aks.PVPBattle.fullInfo(sData.substr(3));
+        "J"     this.aks.PVPBattle.fullInfo(sData.substr(3));
+        "L"     this.aks.PVPBattle.lightBattlesInfo(sData.substr(3));
+        "U" // PVP Battle update
+            "#" this.aks.PVPBattle.battleDestroyed(sData.substr(4));
+            "-" this.aks.PVPBattle.removePlayerInBattle(sData.substr(4));
+            "_" this.aks.PVPBattle.kickPlayerInBattle(sData.substr(4));
+            "+" this.aks.PVPBattle.addPlayerInBattle(sData.substr(4));
+            "R" this.aks.PVPBattle.playerReady(sData.substr(4), true);
+            "r" this.aks.PVPBattle.playerReady(sData.substr(4), false);
+            "M" this.aks.PVPBattle.mapChange(sData.substr(4));
+            "T" this.aks.PVPBattle.typeChange(sData.substr(4));
+            "C" this.aks.PVPBattle.useClan(sData.substr(4));
+            "p" this.aks.PVPBattle.usePass(sData.substr(4));
+        "E" // PVP Message
+            "c"
+                "n" this.api.kernel.showMessage(this.api.lang.getText("INFORMATIONS"), this.api.lang.getText("NO_CLAN_TO_BATTLE"), "ERROR_BOX");
+                "r" this.api.kernel.showMessage(this.api.lang.getText("INFORMATIONS"), this.api.lang.getText("RIGHT_CLAN_TO_BATTLE"), "ERROR_BOX");
+                "w" this.api.kernel.showMessage(this.api.lang.getText("INFORMATIONS"), this.api.lang.getText("WRONG_CLAN_TO_BATTLE"), "ERROR_BOX");
+"H" // Handshake
+    "C"      this.aks.onHelloConnectionServer(sData.substr(2));
+    "G"      this.aks.onHelloGameServer(sData.substr(2));
+     *       this.aks.disconnect(false, true);
+"p" /* Ping */ this.aks.onPong();
+"q" /* Quick Ping */ this.aks.onQuickPong();
+"r" /* Reverse Ping */ this.aks.send("rpong" + sData.substr(5), false);
+"M"      this.aks.onServerMessage(sData.substr(1));
+"k"      this.aks.onServerWillDisconnect();
+"B" // Basics
+    "N" // Nop
+    "A" // Authorization
+        "T"     this.aks.Basics.onAuthorizedCommand(true, sData.substr(3));
+        "L"     this.aks.Basics.onAuthorizedLine(sData.substr(3));
+        "P"     this.aks.Basics.onAuthorizedCommandPrompt(sData.substr(3));
+        "C"     this.aks.Basics.onAuthorizedCommandClear();
+        "E"     this.aks.Basics.onAuthorizedCommand(false);
+        "IO"    this.aks.Basics.onAuthorizedInterfaceOpen(sData.substr(4));
+    "T"     this.aks.Basics.onReferenceTime(sData.substr(2));
+    "D"     this.aks.Basics.onDate(sData.substr(2));
+    "W"     this.aks.Basics.onWhoIs(!bError, sData.substr(3));
+    "P"     this.aks.Basics.onSubscriberRestriction(sData.substr(2));
+    "C"     this.aks.Basics.onFileCheck(sData.substr(2));
+    "p"     this.aks.Basics.onAveragePing(sData.substr(2));
+"A" // Account
+    "c"     this.aks.Account.onCommunity(sData.substr(2));
+    "d"     this.aks.Account.onDofusPseudo(sData.substr(2));
+    "l"     this.aks.Account.onLogin(!bError, sData.substr(3));
+    "L"     this.aks.Account.onCharactersList(!bError, sData.substr(3), false, true);
+    "C"     this.aks.Account.onCharactersList(!bError, sData.substr(2), false, false);
+    "x"     this.aks.Account.onServersList(!bError, sData.substr(3));
+    "A"     this.aks.Account.onCharacterAdd(!bError, sData.substr(3));
+    "T"     this.aks.Account.onTicketResponse(!bError, sData.substr(3));
+    "X"     this.aks.Account.onSelectServer(!bError, true, sData.substr(3));
+    "Y"     this.aks.Account.onSelectServer(!bError, false, sData.substr(3));
+    "S"     this.aks.Account.onCharacterSelected(!bError, sData.substr(4));
+    "s"     this.aks.Account.onStats(sData.substr(2));
+    "N"     this.aks.Account.onNewLevel(sData.substr(2));
+    "R"     this.aks.Account.onRestrictions(sData.substr(2));
+    "H"     this.aks.Account.onHosts(sData.substr(2));
+    "r"     this.aks.Account.onRescue(!bError);
+    "g"     this.aks.Account.onGiftsList(sData.substr(2));
+    "G"     this.aks.Account.onGiftStored(!bError);
+    "q"     this.aks.Account.onQueue(sData.substr(2));
+    "f"     this.aks.Account.onNewQueue(sData.substr(2));
+    "V"     this.aks.Account.onRegionalVersion(sData.substr(2));
+    "P"     this.aks.Account.onCharacterNameGenerated(!bError, sData.substr(3));
+    "K"     this.aks.Account.onKey(sData.substr(2));
+    "Q"     this.aks.Account.onSecretQuestion(sData.substr(2));
+    "D"     this.aks.Account.onCharacterDelete(!bError, sData.substr(3));
+    "M"
+        "?"    this.aks.Account.onCharactersMigrationAskConfirm(sData.substr(3));
+         *     this.aks.Account.onCharactersList(!bError, sData.substr(3), true);
+    "F"     this.aks.Account.onFriendServerList(sData.substr(2));
+    "m"     // End stream ?
+"G" // Game (Fight ?)
+    "C"     this.aks.Game.onCreate(!bError, sData.substr(4));
+    "J"     this.aks.Game.onJoin(sData.substr(3));
+    "P"     this.aks.Game.onPositionStart(sData.substr(2));
+    "R"     this.aks.Game.onReady(sData.substr(2));
+    "S"     this.aks.Game.onStartToPlay();
+    "E"     this.aks.Game.onEnd(sData.substr(2));
+    "M"     this.aks.Game.onMovement(sData.substr(3));
+    "c"     this.aks.Game.onChallenge(sData.substr(2));
+    "t"     this.aks.Game.onTeam(sData.substr(2));
+    "V"     this.aks.Game.onLeave(true, sData.substr(2));
+    "f"     this.aks.Game.onFlag(sData.substr(2));
+    "I"
+        "C"    this.aks.Game.onPlayersCoordinates(sData.substr(4));
+        "E"    this.aks.Game.onEffect(sData.substr(3));
+        "e"    this.aks.Game.onClearAllEffect(sData.substr(3));
+        "P"    this.aks.Game.onPVP(sData.substr(3), false);
+    "D" // Game Data
+        "M"    this.aks.Game.onMapData(sData.substr(4));
+        "K"    this.aks.Game.onMapLoaded();
+        "C"    this.aks.Game.onCellData(sData.substr(3));
+        "Z"    this.aks.Game.onZoneData(sData.substring(3));
+        "O"    this.aks.Game.onCellObject(sData.substring(3));
+        "F"    this.aks.Game.onFrameObject2(sData.substring(4));
+        "E"    this.aks.Game.onFrameObjectExternal(sData.substring(4));
+    "d" // Fight Challenges
+        "K"    this.aks.Game.onFightChallengeUpdate(sData.substr(4), true);
+        "O"    this.aks.Game.onFightChallengeUpdate(sData.substr(4), false);
+         *     this.aks.Game.onFightChallenge(sData.substr(2));
+    "A" // Game Actions
+        "S"    this.aks.GameActions.onActionsStart(sData.substr(3));
+        "F"    this.aks.GameActions.onActionsFinish(sData.substr(3));
+         *     this.aks.GameActions.onActions(sData.substr(2));
+    "T" // Turn
+        "S"    this.aks.Game.onTurnStart(sData.substr(3));
+        "F"    this.aks.Game.onTurnFinish(sData.substr(3));
+        "L"    this.aks.Game.onTurnlist(sData.substr(4));
+        "M"    this.aks.Game.onTurnMiddle(sData.substr(4));
+        "R"    this.aks.Game.onTurnReady(sData.substr(3));
+    "X"     this.aks.Game.onExtraClip(sData.substr(2));
+    "o"     this.aks.Game.onFightOption(sData.substr(2));
+    "O"     this.aks.Game.onGameOver();
+"c" // Chat
+    "M"     this.aks.Chat.onMessage(!bError, sData.substr(3));
+    "s"     this.aks.Chat.onServerMessage(sData.substr(2));
+    "S"     this.aks.Chat.onSmiley(sData.substr(2));
+    "C"     this.aks.Chat.onSubscribeChannel(sData.substr(2));
+"D" // Dialog
+    "A"     this.aks.Dialog.onCustomAction(sData.substr(2));
+    "C"     this.aks.Dialog.onCreate(!bError, sData.substr(3));
+    "Q"     this.aks.Dialog.onQuestion(sData.substr(2));
+    "V"     this.aks.Dialog.onLeave();
+    "P"     this.aks.Dialog.onPause();
+"I" // Infos
+    "M"     this.aks.Infos.onInfoMaps(sData.substr(2));
+    "C"     this.aks.Infos.onInfoCompass(sData.substr(2));
+    "H"     this.aks.Infos.onInfoCoordinatespHighlight(sData.substr(2));
+    "m"     this.aks.Infos.onMessage(sData.substr(2));
+    "Q"     this.aks.Infos.onQuantity(sData.substr(2));
+    "O"     this.aks.Infos.onObject(sData.substr(2));
+    "L" // Life
+        "S"     this.aks.Infos.onLifeRestoreTimerStart(sData.substr(3));
+        "F"     this.aks.Infos.onLifeRestoreTimerFinish(sData.substr(3));
+"S" // Spell
+    "L"
+        "o"     this.aks.Spells.onChangeOption(sData.substr(3));
+         *      this.aks.Spells.onList(sData.substr(2));
+    "U"     this.aks.Spells.onUpgradeSpell(!bError, sData.substr(3));
+    "B"     this.aks.Spells.onSpellBoost(sData.substr(2));
+    "F"     this.aks.Spells.onSpellForget(sData.substr(2));
+"O" // Items
+    "a"     this.aks.Items.onAccessories(sData.substr(2));
+    "D"     this.aks.Items.onDrop(!bError, sData.substr(3));
+    "A"     this.aks.Items.onAdd(!bError, sData.substr(3));
+    "C"     this.aks.Items.onChange(sData.substr(3));
+    "R"     this.aks.Items.onRemove(sData.substr(2));
+    "Q"     this.aks.Items.onQuantity(sData.substr(2));
+    "M"     this.aks.Items.onMovement(sData.substr(2));
+    "T"     this.aks.Items.onTool(sData.substr(2));
+    "w"     this.aks.Items.onWeight(sData.substr(2));
+    "S"     this.aks.Items.onItemSet(sData.substr(2));
+    "K"     this.aks.Items.onItemUseCondition(sData.substr(2));
+    "F"     this.aks.Items.onItemFound(sData.substr(2));
+"F" // Friends
+    "A"     this.aks.Friends.onAddFriend(!bError, sData.substr(3));
+    "D"     this.aks.Friends.onRemoveFriend(!bError, sData.substr(3));
+    "L"     this.aks.Friends.onFriendsList(sData.substr(3));
+    "S"     this.aks.Friends.onSpouse(sData.substr(2));
+    "O"     this.aks.Friends.onNotifyChange(sData.substr(2));
+"i" // Enemies
+    "A"     this.aks.Enemies.onAddEnemy(!bError, sData.substr(3));
+    "D"     this.aks.Enemies.onRemoveEnemy(!bError, sData.substr(3));
+    "L"     this.aks.Enemies.onEnemiesList(sData.substr(3));
+"K" // Key
+    "C"     this.aks.Key.onCreate(sData.substr(3));
+    "K"     this.aks.Key.onKey(!bError);
+    "V"     this.aks.Key.onLeave();
+"J" // Job
+    "S"     this.aks.Job.onSkills(sData.substr(3));
+    "X"     this.aks.Job.onXP(sData.substr(3));
+    "N"     this.aks.Job.onLevel(sData.substr(2));
+    "R"     this.aks.Job.onRemove(sData.substr(2));
+    "O"     this.aks.Job.onOptions(sData.substr(2));
+"E" // Exchange
+    "R"     this.aks.Exchange.onRequest(!bError, sData.substr(3));
+    "K"     this.aks.Exchange.onReady(sData.substr(2));
+    "V"     this.aks.Exchange.onLeave(!bError, sData.substr(2));
+    "C"     this.aks.Exchange.onCreate(!bError, sData.substr(3));
+    "c"     this.aks.Exchange.onCraft(!bError, sData.substr(3));
+    "M"     this.aks.Exchange.onLocalMovement(!bError, sData.substr(3));
+    "m"     this.aks.Exchange.onDistantMovement(!bError, sData.substr(3));
+    "r"     this.aks.Exchange.onCoopMovement(!bError, sData.substr(3));
+    "p"     this.aks.Exchange.onPayMovement(!bError, sData.substr(2));
+    "s"     this.aks.Exchange.onStorageMovement(!bError, sData.substr(3));
+    "i"     this.aks.Exchange.onPlayerShopMovement(!bError, sData.substr(3));
+    "W"     this.aks.Exchange.onCraftPublicMode(sData.substr(2));
+    "e"     this.aks.Exchange.onMountStorage(sData.substr(2));
+    "f"     this.aks.Exchange.onMountPark(sData.substr(2));
+    "w"     this.aks.Exchange.onMountPods(sData.substr(2));
+    "L"     this.aks.Exchange.onList(sData.substr(2));
+    "S"     this.aks.Exchange.onSell(!bError);
+    "B"     this.aks.Exchange.onBuy(!bError);
+    "q"     this.aks.Exchange.onAskOfflineExchange(sData.substr(2));
+    "H" 
+        "S"     this.aks.Exchange.onSearch(sData.substr(3));
+        "L"     this.aks.Exchange.onBigStoreTypeItemsList(sData.substr(3));
+        "M"     this.aks.Exchange.onBigStoreTypeItemsMovement(sData.substr(3));
+        "l"     this.aks.Exchange.onBigStoreItemsList(sData.substr(3));
+        "m"     this.aks.Exchange.onBigStoreItemsMovement(sData.substr(3));
+        "P"     this.aks.Exchange.onItemMiddlePriceInBigStore(sData.substr(3));
+    "J"     this.aks.Exchange.onCrafterListChanged(sData.substr(2));
+    "j"     this.aks.Exchange.onCrafterReference(sData.substr(2));
+    "A"     this.aks.Exchange.onCraftLoop(sData.substr(2));
+    "a"     this.aks.Exchange.onCraftLoopEnd(sData.substr(2));
+"h" // Houses
+    "L"     this.aks.Houses.onList(sData.substr(2));
+    "P"     this.aks.Houses.onProperties(sData.substr(2));
+    "X"     this.aks.Houses.onLockedProperty(sData.substr(2));
+    "C"     this.aks.Houses.onCreate(sData.substr(3));
+    "S"     this.aks.Houses.onSell(!bError, sData.substr(3));
+    "B"     this.aks.Houses.onBuy(!bError, sData.substr(3));
+    "V"     this.aks.Houses.onLeave();
+    "G"     this.aks.Houses.onGuildInfos(sData.substr(2));
+"s" // Storages
+    "L"     this.aks.Storages.onList(sData.substr(2));
+    "X"     this.aks.Storages.onLockedProperty(sData.substr(2));
+"e" // Emotes
+    "U"     this.aks.Emotes.onUse(!bError, sData.substr(3));
+    "L"     this.aks.Emotes.onList(sData.substr(2));
+    "A"     this.aks.Emotes.onAdd(sData.substr(2));
+    "R"     this.aks.Emotes.onRemove(sData.substr(2));
+    "D"     this.aks.Emotes.onDirection(sData.substr(2));
+"d" // Documents
+    "C"     this.aks.Documents.onCreate(!bError, sData.substr(3));
+    "V"     this.aks.Documents.onLeave();
+"g" // Guild (Clan ?)
+    "n"     this.aks.Guild.onNew();
+    "e"     this.aks.Guild.onEdit(sData.substr(2));
+    "C"     this.aks.Guild.onCreate(!bError, sData.substr(3));
+    "S"     this.aks.Guild.onStats(sData.substr(2));
+    "I" // Guild Infos
+        "G"     this.aks.Guild.onInfosGeneral(sData.substr(3));
+        "M"     this.aks.Guild.onInfosMembers(sData.substr(3));
+        "B"     this.aks.Guild.onInfosBoosts(sData.substr(3));
+        "F"     this.aks.Guild.onInfosMountPark(sData.substr(3));
+        "T" // Guild Tax Info
+            "M"     this.aks.Guild.onInfosTaxCollectorsMovement(sData.substr(4));
+            "P"     this.aks.Guild.onInfosTaxCollectorsPlayers(sData.substr(4));
+            "p"     this.aks.Guild.onInfosTaxCollectorsAttackers(sData.substr(4));
+        "H"     this.aks.Guild.onInfosHouses(sData.substr(3));
+    "J" // Guild Join
+        "E"     this.aks.Guild.onJoinError(sData.substr(3));
+        "R"     this.aks.Guild.onRequestLocal(sData.substr(3));
+        "r"     this.aks.Guild.onRequestDistant(sData.substr(3));
+        "K"     this.aks.Guild.onJoinOk(sData.substr(3));
+        "C"     this.aks.Guild.onJoinDistantOk();
+    "V"     this.aks.Guild.onLeave();
+    "Q"     this.aks.Guild.onInsufficientMember();
+    "R"     this.aks.Guild.onRemoved();
+    "K"     this.aks.Guild.onBann(!bError, sData.substr(3));
+    "H"     this.aks.Guild.onHireTaxCollector(!bError, sData.substr(3));
+    "A"     this.aks.Guild.onTaxCollectorAttacked(sData.substr(2));
+    "T"     this.aks.Guild.onTaxCollectorInfo(sData.substr(2));
+    "U"     this.aks.Guild.onUserInterfaceOpen(sData.substr(2));
+    "B"     this.aks.Guild.onAutoBann(sData.substr(2));
+    "L"     this.aks.Guild.onNewLevel(sData.substr(2));
+"W" // Waypoints and Subway
+    "C"     this.aks.Waypoints.onCreate(sData.substr(2));
+    "V"     this.aks.Waypoints.onLeave();
+    "U"     this.aks.Waypoints.onUseError();
+    "c"     this.aks.Subway.onCreate(sData.substr(2));
+    "v"     this.aks.Subway.onLeave();
+    "u"     this.aks.Subway.onUseError();
+    "p"     this.aks.Subway.onPrismCreate(sData.substr(2));
+    "w"     this.aks.Subway.onPrismLeave();
+"a"
+    "l"     this.aks.Subareas.onList(sData.substr(3));
+    "m"     this.aks.Subareas.onAlignmentModification(sData.substr(2));
+    "M"     this.aks.Conquest.onAreaAlignmentChanged(sData.substr(2));
+"C" // Conquest
+    "I" // Prism Info
+        "J"     this.aks.Conquest.onPrismInfosJoined(sData.substr(3));
+        "V"     this.aks.Conquest.onPrismInfosClosing(sData.substr(3));
+    "B"     this.aks.Conquest.onConquestBonus(sData.substr(2));
+    "A"     this.aks.Conquest.onPrismAttacked(sData.substr(2));
+    "S"     this.aks.Conquest.onPrismSurvived(sData.substr(2));
+    "D"     this.aks.Conquest.onPrismDead(sData.substr(2));
+    "P"     this.aks.Conquest.onPrismFightAddPlayer(sData.substr(2));
+    "p"     this.aks.Conquest.onPrismFightAddEnemy(sData.substr(2));
+    "W"     this.aks.Conquest.onWorldData(sData.substr(2));
+    "b"     this.aks.Conquest.onConquestBalance(sData.substr(2));
+"Z" // Specialization
+    "S"     this.aks.Specialization.onSet(sData.substr(2));
+    "C"     this.aks.Specialization.onChange(sData.substr(2));
+"f" // Fights Info
+    "C"     this.aks.Fights.onCount(sData.substr(2));
+    "L"     this.aks.Fights.onList(sData.substr(2));
+    "D"     this.aks.Fights.onDetails(sData.substr(2));
+"T" // Tutorial
+    "C"     this.aks.Tutorial.onCreate(sData.substr(2));
+    "T"     this.aks.Tutorial.onShowTip(sData.substr(2));
+    "B"     this.aks.Tutorial.onGameBegin();
+"Q" // Quests
+    "L"     this.aks.Quests.onList(sData.substr(3));
+    "S"     this.aks.Quests.onStep(sData.substr(2));
+"P" // Party
+    "I"     this.aks.Party.onInvite(!bError, sData.substr(3));
+    "L"     this.aks.Party.onLeader(sData.substr(2));
+    "R"     this.aks.Party.onRefuse(sData.substr(2));
+    "A"     this.aks.Party.onAccept(sData.substr(2));
+    "C"     this.aks.Party.onCreate(!bError, sData.substr(3));
+    "V"     this.aks.Party.onLeave(sData.substr(2));
+    "F"     this.aks.Party.onFollow(!bError, sData.substr(3));
+    "M"     this.aks.Party.onMovement(sData.substr(2));
+"R" // Mount
+    "e"     this.aks.Mount.onEquip(sData.substr(2));
+    "x"     this.aks.Mount.onXP(sData.substr(2));
+    "n"     this.aks.Mount.onName(sData.substr(2));
+    "d"     this.aks.Mount.onData(sData.substr(2));
+    "p"     this.aks.Mount.onMountPark(sData.substr(2));
+    "D"     this.aks.Mount.onMountParkBuy(sData.substr(2));
+    "v"     this.aks.Mount.onLeave(sData.substr(2));
+    "r"     this.aks.Mount.onRidingState(sData.substr(2));

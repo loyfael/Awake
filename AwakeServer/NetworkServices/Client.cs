@@ -22,7 +22,7 @@ namespace Awake.NetworkServices
         }
 
         public void Disconnect() {
-            // TODO: Send Disconnect packet "HD"
+            Send("HD"); // Send Disconnect packet "HD"
             socket.Close();
         }
 
