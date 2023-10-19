@@ -4,34 +4,57 @@ using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
+using Awake.CoreServices.Encryption;
 
 namespace Awake.NetworkServices
 {
+    internal enum ClientStatus {
+        HC_WaitingForVersion,
+        HC_WaitingForUsername,
+        HC_WaitingForPassword,
+        HC_Done
+    }
+
     internal class Client
     {
-        private Socket socket; // Socket utilisée pour parler au client
-        private int ID; // ID temporaire assigné au client
+        public ClientStatus Status {
+            set => Status = value;
+            get => Status;
+        }
+
+        public Socket Socket { // Socket utilisée pour parler au client
+            private set => Socket = value;
+            get => Socket;
+        }
+
+        public int ID { // ID temporaire assigné au client (change à chaque connexion)
+            private set => ID = value;
+            get => ID;
+        }
+
+        public string SessionKey { // TODO: discuss implementation and crypto
+            private set => SessionKey = value;
+            get => SessionKey;
+        }
+
+        public string Username { set => Username = value; get => Username; }
+        public string Password { set => Password = value; get => Password; }
+        public string Version { set => Version = value; get => Version; }
+
 
         public Client(Socket socket) {
-            this.socket = socket;
-            this.ID = socket.GetHashCode();
+            Socket = socket;
+            ID = socket.GetHashCode();
+            SessionKey = ClientKeyGenerator.GenerateKey();
         }
 
         public void Send(string packet) {
-            this.socket.Send(Encoding.UTF8.GetBytes(packet));
+            Socket.Send(Encoding.UTF8.GetBytes(packet));
         }
 
         public void Disconnect() {
-            Send("HD"); // Send Disconnect packet "HD"
-            socket.Close();
-        }
-
-        public int GetID() {
-            return ID;
-        }
-
-        public Socket GetSocket() {
-            return socket;
+            Send("HD"); // TODO: Send Disconnect packet "HD"
+            Socket.Close();
         }
     }
 }

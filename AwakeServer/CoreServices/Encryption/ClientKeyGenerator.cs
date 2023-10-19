@@ -8,5 +8,8 @@ namespace Awake.CoreServices.Encryption
 {
     internal class ClientKeyGenerator
     {
+        public static string GenerateKey() {
+            return "abcdefghijklmnopqrstuvwxyz"; // TODO: key generation
+        }
     }
 }

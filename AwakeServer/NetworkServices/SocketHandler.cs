@@ -37,8 +37,9 @@ namespace Awake.NetworkServices
 					Socket clientSocket = ServerSocket.Accept(); // TODO: change to non-blocking to better handle gracefull stop
                     Client client = new Client(clientSocket);
 
-					Utils.Log("New client: " + client.GetID());
-					AllClients.Add(client.GetID(), client);
+					Utils.Log("New client: " + client.ID);
+					AllClients.Add(client.ID, client);
+					Handshake.StartHandshake(client);
 				}
 
 				tProcessClients.Join();
@@ -61,7 +62,7 @@ namespace Awake.NetworkServices
 
 				readList.Clear();
 				foreach (Client client in AllClients.Values) {
-					readList.Add(client.GetSocket());
+					readList.Add(client.Socket);
 				}
 
 				if (readList.Count > 0) {
@@ -69,7 +70,7 @@ namespace Awake.NetworkServices
 
 					for (int i=0; i<readList.Count; i++) {
 						Client currentClient = GetClientByID(readList[i].GetHashCode());
-						Socket cSocket = currentClient.GetSocket();
+						Socket cSocket = currentClient.Socket;
 
 						if (cSocket.Available > 0) {
 							int len = Math.Min(cSocket.Available, BUFFER_SIZE);
@@ -78,14 +79,14 @@ namespace Awake.NetworkServices
 							byte[] buffer = new byte[len];
 							cSocket.Receive(buffer, buffer.Length, SocketFlags.None); // TODO: Move Receive logic to Client class ?
 							string packet = Encoding.UTF8.GetString(buffer);
-							Utils.Log(currentClient.GetID() + " >> " + packet);
+							Utils.Log(currentClient.ID + " >> " + packet);
 
 							PacketManager.ProcessPacket(currentClient, packet);
 
 						} else {
-							Utils.Log("Client disconnected: " + currentClient.GetID());
+							Utils.Log("Client disconnected: " + currentClient.ID);
 							currentClient.Disconnect();
-							AllClients.Remove(currentClient.GetID());
+							AllClients.Remove(currentClient.ID);
 						}
 					}
 				}

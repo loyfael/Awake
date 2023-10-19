@@ -13,6 +13,6 @@ namespace Awake.CoreServices
 
         /* Networking config */
         public const string NETWORK_BIND_HOST = "127.0.0.1";
-		public const int NETWORK_BIND_PORT = 4444;
+		public const int NETWORK_BIND_PORT = 444;
     }
 }

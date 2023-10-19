@@ -15,7 +15,20 @@ namespace Awake.CoreServices.Packet
          * vers le bon PacketHandler.
          */
         public static void ProcessPacket(Client client, string packet) {
-            // TODO: Add packet processing
+            switch (client.Status) {
+                case ClientStatus.HC_WaitingForVersion:
+                case ClientStatus.HC_WaitingForUsername:
+                case ClientStatus.HC_WaitingForPassword:
+                    Handshake.ProcessPacket(client, packet);
+                    break;
+
+                default:
+                    switch (packet[0]) {
+                        case 'H':
+                            break;
+                    }
+                    break;
+            }
         }
     }
 }
