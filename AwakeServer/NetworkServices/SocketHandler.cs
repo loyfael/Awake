@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Awake.CoreServices;
 using Awake.CoreServices.Packet;
 using System.Net.NetworkInformation;
+using DotNetEnv;
 
 namespace Awake.NetworkServices
 {
@@ -23,10 +24,13 @@ namespace Awake.NetworkServices
 
 		public static void Start() {
 			try {
-				Utils.Log("Binding to " + AppConfig.NETWORK_BIND_HOST + ":" + AppConfig.NETWORK_BIND_PORT);
-				IPAddress ipAddress = IPAddress.Parse(AppConfig.NETWORK_BIND_HOST);
+				string host = Env.GetString("NETWORK_BIND_HOST");
+				int port = Env.GetInt("NETWORK_BIND_PORT");
+				
+				Utils.Log("Binding to " + host + ":" + port);
+				IPAddress ipAddress = IPAddress.Parse(host);
 
-				ServerSocket.Bind(new IPEndPoint(ipAddress, AppConfig.NETWORK_BIND_PORT));
+				ServerSocket.Bind(new IPEndPoint(ipAddress, port));
 				ServerSocket.Listen(LISTEN_COUNT);
 
 				Thread tProcessClients = new Thread(new ThreadStart(processClients));

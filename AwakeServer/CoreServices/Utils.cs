@@ -4,6 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DotNetEnv;
 
 namespace Awake.CoreServices
 {
@@ -34,7 +35,7 @@ namespace Awake.CoreServices
         }
 
         public static void Debug(object msg) {
-            if (AppConfig.DEBUG) {
+            if (Env.GetBool("DEBUG")) {
                 LogWithLevel(msg, LogLevel.Debug);
             }
         }

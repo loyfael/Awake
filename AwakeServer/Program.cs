@@ -22,25 +22,25 @@ namespace Awake
 
         public void Start() {
 			try {
-				Utils.Log("Awake App started..");
-				dbConnect.DatabaseConnection(); // TODO -> Fix -> Host can't be null.
+				Utils.Log("Starting Awake App...");
 				dbConnect.OpenConnection(); // Ouvrir la connexion à la base de donnée
 				running = true;
-				SocketHandler.Start(); // Hangs until shutdown is requested
-				Utils.Log("Server stopped.");
-
+				SocketHandler.Start(); // Bloque jusqu'à la fermeture du serveur
 			} catch(Exception e) {
-				Console.WriteLine("Something wrong.. " + e);
-				dbConnect.CloseConnection();
-			}	
+				Utils.Error("Something went wrong : " + e.Message);
+			}
+			GracefullStop();
 		}
 
 		public static void Main(string[] args) {
 			serverInstance = new AwakeServer();
 
+			Utils.Log("Loading Environment...");
+			Env.TraversePath().Load();
+
 			Console.CancelKeyPress += delegate(object? sender, ConsoleCancelEventArgs e) {
 				e.Cancel = true;
-				GracefullStop();
+				serverInstance.GracefullStop();
 			};
 
 			serverInstance.Start();
@@ -50,11 +50,13 @@ namespace Awake
 			return serverInstance.running;
 		}
 		
-		public static void GracefullStop() {
-			Utils.Log("Shutting down gracefully");
+		public void GracefullStop() {
+			Utils.Log("Shutting down server...");
 
 			serverInstance.running = false;
+			dbConnect.CloseConnection();
 			SocketHandler.StopServer();
+			Utils.Log("Server stopped.");
 		}
 	}
 }
