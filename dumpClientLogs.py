@@ -22,11 +22,11 @@ try:
     while True:
         cli, addr = srv.accept()
         print('[INFO] Client connected.')
-        msg = b'something' # Could be anything other than b''
+        msg = None # Could be anything other than b''
 
         while msg!=b'':
             msg = cli.recv(2048)
-            print(msg.decode())
+            print(msg.decode().replace('!SOS','\n    !SOS'))
     
         print('\n[INFO] Client disconnected. Waiting for another client...')
 finally:

@@ -42,12 +42,17 @@ namespace Awake.NetworkServices
         }
 
         public void Send(string packet) {
-            Socket.Send(Encoding.UTF8.GetBytes(packet));
+            Utils.Debug(ID + " << " + packet);
+            Socket.Send(Encoding.UTF8.GetBytes(packet + '\0'));
         }
 
         public void Disconnect() {
-            Send("HD"); // TODO: Send Disconnect packet "HD"
+            if (Socket.Connected) {
+                Send("HD"); // On notifie la déconnexion au client
+            }
+
             Socket.Close();
+            SocketHandler.RemoveClientByID(ID);
         }
     }
 }

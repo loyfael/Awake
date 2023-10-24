@@ -41,9 +41,9 @@ namespace Awake.NetworkServices
 					Socket clientSocket = ServerSocket.Accept(); // TODO: change to non-blocking to better handle gracefull stop
                     Client client = new Client(clientSocket);
 
-					Utils.Log("New client: " + client.ID);
-					AllClients.Add(client.ID, client);
+					Utils.Log($"New client: {client.ID} from {client.IPAddress}");
 					Handshake.StartHandshake(client);
+					AllClients.Add(client.ID, client);
 				}
 
 				tProcessClients.Join();
@@ -70,7 +70,22 @@ namespace Awake.NetworkServices
 				}
 
 				if (readList.Count > 0) {
-					Socket.Select(readList, null, null, SELECT_TIMEOUT);
+					try {
+						Socket.Select(readList, null, null, SELECT_TIMEOUT);
+					} catch (ObjectDisposedException) {
+						/* 
+						 * Ce cas peut arriver à cause d'une racing condition entre
+						 * la lecture de AllClients.Values et le remplissage de la
+						 * readList. Lors du prochain tour de boucle, le client ne
+						 * devrait plus faire partie de AllClients.
+						 *
+						 * TODO: identifier le mauvais client et traiter les autres
+						 * paquets, possibilité de DOS avec un client bien timé
+						 */
+
+						Thread.Sleep(10);
+						continue;
+					}
 
 					for (int i=0; i<readList.Count; i++) {
 						Client currentClient = GetClientByID(readList[i].GetHashCode());
@@ -82,19 +97,21 @@ namespace Awake.NetworkServices
 
 							byte[] buffer = new byte[len];
 							cSocket.Receive(buffer, buffer.Length, SocketFlags.None); // TODO: Move Receive logic to Client class ?
-							string packet = Encoding.UTF8.GetString(buffer);
-							Utils.Log(currentClient.ID + " >> " + packet);
+							string sBuffer = Encoding.UTF8.GetString(buffer);
+							
+							string[] packets = sBuffer.Split(new string[] {"\0", "\n\0"}, StringSplitOptions.RemoveEmptyEntries);
 
-							PacketManager.ProcessPacket(currentClient, packet);
-
+							foreach (string packet in packets) {
+								Utils.Debug(currentClient.ID + " >> " + packet.Replace("\n", " \\n "));
+								PacketManager.ProcessPacket(currentClient, packet);
+							}
 						} else {
 							Utils.Log("Client disconnected: " + currentClient.ID);
 							currentClient.Disconnect();
-							AllClients.Remove(currentClient.ID);
 						}
 					}
 				}
-				Thread.Sleep(10);
+				Thread.Sleep(100);
 			}
 		}
 
@@ -107,6 +124,12 @@ namespace Awake.NetworkServices
 
 		public static Client GetClientByID(int id) {
 			return AllClients[id];
+		}
+
+		public static void RemoveClientByID(int id) {
+			if (AllClients.ContainsKey(id)) {
+				AllClients.Remove(id);
+			}
 		}
 
     }

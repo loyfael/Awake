@@ -23,7 +23,7 @@ namespace Awake
         public void Start() {
 			try {
 				Utils.Log("Starting Awake App...");
-				dbConnect.OpenConnection(); // Ouvrir la connexion à la base de donnée
+				// dbConnect.OpenConnection(); // Ouvrir la connexion à la base de donnée
 				running = true;
 				SocketHandler.Start(); // Bloque jusqu'à la fermeture du serveur
 			} catch(Exception e) {
