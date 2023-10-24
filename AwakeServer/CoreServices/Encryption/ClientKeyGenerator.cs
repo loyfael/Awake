@@ -9,7 +9,14 @@ namespace Awake.CoreServices.Encryption
     internal class ClientKeyGenerator
     {
         public static string GenerateKey() {
-            return "abcdefghijklmnopqrstuvwxyz"; // TODO: key generation
+            string k = "";
+		    Random rnd = new();
+
+            for (int i=0; i<32; i++) {
+                k += (char) rnd.Next('a', 'z'+1);
+            }
+
+            return k;
         }
     }
 }

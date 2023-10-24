@@ -1,50 +1,43 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
+using Awake.CoreServices;
 using Awake.CoreServices.Encryption;
 
 namespace Awake.NetworkServices
 {
     internal enum ClientStatus {
         HC_WaitingForVersion,
-        HC_WaitingForUsername,
-        HC_WaitingForPassword,
+        HC_WaitingForCredentials,
+        HC_LoginDenied,
         HC_Done
     }
 
     internal class Client
     {
-        public ClientStatus Status {
-            set => Status = value;
-            get => Status;
-        }
+        public ClientStatus Status;  // Statut actuel du client
+        public Socket Socket;        // Socket utilisée pour parler au client
+        public int ID;               // ID temporaire assigné au client (change à chaque connexion)
+        public string SessionKey;    // TODO: discuss implementation and crypto
 
-        public Socket Socket { // Socket utilisée pour parler au client
-            private set => Socket = value;
-            get => Socket;
-        }
-
-        public int ID { // ID temporaire assigné au client (change à chaque connexion)
-            private set => ID = value;
-            get => ID;
-        }
-
-        public string SessionKey { // TODO: discuss implementation and crypto
-            private set => SessionKey = value;
-            get => SessionKey;
-        }
-
-        public string Username { set => Username = value; get => Username; }
-        public string Password { set => Password = value; get => Password; }
-        public string Version { set => Version = value; get => Version; }
+        public string Username = ""; // Username transmis par le client
+        public string Password = ""; // Stocké sous la forme hash( hash(Password + SessionKey) )
+        public string Version = "unknown";
+        public string IPAddress = "unknown";
 
 
         public Client(Socket socket) {
             Socket = socket;
             ID = socket.GetHashCode();
+
+            if (socket.RemoteEndPoint != null) {
+                IPAddress = ((IPEndPoint) socket.RemoteEndPoint).Address.ToString();
+            }
+
             SessionKey = ClientKeyGenerator.GenerateKey();
         }
 

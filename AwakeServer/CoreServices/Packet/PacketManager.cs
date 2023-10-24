@@ -16,17 +16,27 @@ namespace Awake.CoreServices.Packet
          */
         public static void ProcessPacket(Client client, string packet) {
             switch (client.Status) {
-                case ClientStatus.HC_WaitingForVersion:
-                case ClientStatus.HC_WaitingForUsername:
-                case ClientStatus.HC_WaitingForPassword:
-                    Handshake.ProcessPacket(client, packet);
+                case ClientStatus.HC_Done:
+                    if (packet.Length < 2) {
+                        Utils.Error($"Wrong protocol, custom client detected (at {client.IPAddress})");
+                        client.Disconnect();
+                    } else {
+                        switch (packet[0]) {
+                            case 'A':
+                                Account.ProcessPacket(client, packet);
+                                break;
+                            case 'H':
+                                Handshake.ProcessPacket(client, packet);
+                                break;
+                            default:
+                                Utils.Error($"Missing packet route for \"{packet}\"");
+                                break;
+                        }
+                    }
                     break;
 
                 default:
-                    switch (packet[0]) {
-                        case 'H':
-                            break;
-                    }
+                    Handshake.ProcessHandshakePacket(client, packet);
                     break;
             }
         }
