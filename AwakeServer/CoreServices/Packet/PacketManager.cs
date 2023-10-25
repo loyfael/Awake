@@ -25,13 +25,13 @@ namespace Awake.CoreServices.Packet
                     } else {
                         switch (packet[0]) {
                             case 'A':
-                                Account.ProcessPacket(client, packet);
+                                Account.AccountProcessPacket(client, packet);
                                 break;
                             case 'H':
-                                Handshake.ProcessPacket(client, packet);
+                                Handshake.HandshakeProcessPacket(client, packet);
                                 break;
                             case 'B':
-                                Basics.ProcessPacket(client, packet);
+                                Basics.BasicProcessPacket(client, packet);
                                 break;
                             default:
                                 OutputMessage.Error($"Missing packet route for \"{packet}\"");
