@@ -18,16 +18,18 @@ namespace Awake.NetworkServices
 		private const int LISTEN_COUNT = 10;
 		private const int SELECT_TIMEOUT = 100; // Milliseconds
 
-        private static Socket ServerSocket = new Socket( AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp );
-		private static Dictionary<int, Client> AllClients = new Dictionary<int, Client>();
+        private static readonly Socket ServerSocket = new( AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp );
+		private static Dictionary<int, Client> AllClients = new();
 
-
+		/// <summary>
+		/// Démarrer le socket de l'application
+		/// </summary>
 		public static void Start() {
 			try {
 				string host = Env.GetString("NETWORK_BIND_HOST");
 				int port = Env.GetInt("NETWORK_BIND_PORT");
 				
-				Utils.Log("Binding to " + host + ":" + port);
+				OutputMessage.Log("Binding to " + host + ":" + port);
 				IPAddress ipAddress = IPAddress.Parse(host);
 
 				ServerSocket.Bind(new IPEndPoint(ipAddress, port));
@@ -37,11 +39,11 @@ namespace Awake.NetworkServices
 				tProcessClients.Start();
 
 				while (AwakeServer.isRunning()) {
-					Utils.Debug("Waiting for new client...");
+					OutputMessage.Debug("Waiting for new client...");
 					Socket clientSocket = ServerSocket.Accept(); // TODO: change to non-blocking to better handle gracefull stop ?
                     Client client = new Client(clientSocket);
 
-					Utils.Log($"New client: {client.ID} from {client.IPAddress}");
+					OutputMessage.Log($"New client: {client.ID} from {client.IPAddress}");
 					Handshake.StartHandshake(client);
 					AllClients.Add(client.ID, client);
 				}
@@ -49,18 +51,18 @@ namespace Awake.NetworkServices
 				tProcessClients.Join();
 			}
 			catch (SocketException E) {
-				Utils.Log("Error: " + E.Message);
+				OutputMessage.Log("Error: " + E.Message);
 			}
 		}
 
 		
-		/*
-		 * Cette méthode est exécutée dans un thread à part. Elle surveille les sockets
-		 * des clients pour savoir s'ils tentent d'envoyer un paquet, et redirige le
-		 * paquet vers le PacketManager.
-		 */
+		/// <summary>
+		/// Cette méthode est exécutée dans un thread à part. Elle surveille les sockets</br>
+		/// des clients pour savoir s'ils tentent d'envoyer un paquet, et redirige le</br>
+		/// paquet vers le PacketManager.
+		/// </summary>
 		private static void processClients() {
-			List<Socket> readList = new List<Socket>();
+			List<Socket> readList = new();
 
 			while (AwakeServer.isRunning()) {
 
@@ -93,7 +95,7 @@ namespace Awake.NetworkServices
 
 						if (cSocket.Available > 0) {
 							int len = Math.Min(cSocket.Available, BUFFER_SIZE);
-							if (len==BUFFER_SIZE) Utils.Debug("Maximum buffer size reached, please increase BUFFER_SIZE"); // TODO: Remove when dev is finished or if never reached
+							if (len==BUFFER_SIZE) OutputMessage.Debug("Maximum buffer size reached, please increase BUFFER_SIZE"); // TODO: Remove when dev is finished or if never reached
 
 							byte[] buffer = new byte[len];
 							cSocket.Receive(buffer, buffer.Length, SocketFlags.None); // TODO: Move Receive logic to Client class ?
@@ -102,11 +104,11 @@ namespace Awake.NetworkServices
 							string[] packets = sBuffer.Split(new string[] {"\0", "\n\0"}, StringSplitOptions.RemoveEmptyEntries);
 
 							foreach (string packet in packets) {
-								Utils.Debug(currentClient.ID + " >> " + packet.Replace("\n", " \\n "));
+								OutputMessage.Debug(currentClient.ID + " >> " + packet.Replace("\n", " \\n "));
 								PacketManager.ProcessPacket(currentClient, packet);
 							}
 						} else {
-							Utils.Log("Client disconnected: " + currentClient.ID);
+							OutputMessage.Log("Client disconnected: " + currentClient.ID);
 							currentClient.Disconnect();
 						}
 					}
