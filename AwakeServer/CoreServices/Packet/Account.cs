@@ -79,7 +79,7 @@ namespace Awake.CoreServices.Packet
         /// </summary>
         /// <param name="client"></param>
         /// <param name="packet"></param>
-        public static void ProcessPacket(Client client, string packet) {
+        public static void AccountProcessPacket(Client client, string packet) {
             switch (packet[1]) {
                 case 'f': // Get Queue
                     
