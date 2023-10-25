@@ -61,7 +61,7 @@ namespace Awake.DatabaseServices.Models
         /// </summary>
         /// <returns></returns>
         public DBCharacter GetCharacterQueue() {
-            return Characters;
+            return Characters; // TODO: À corriger, et m'expliquer eheh
         }
 
     }
