@@ -30,6 +30,10 @@ namespace Awake.CoreServices.Packet
          *     "C"     this.aks.Basics.onFileCheck(sData.substr(2));
          *     "p"     this.aks.Basics.onAveragePing(sData.substr(2));
          */
+
+         // TODO: Soit plus explicite sur le nommage de tes méthodes si possibles
+         // Et pense à les documenter en mettant un triple ///, cela m'aidera
+         // dans la globalité du projet ^^ (je te réécrit ceci au cas échéant eheh)
         public static void ProcessPacket(Client client, string packet) {
             switch (packet[1]) {
                 case 'A':
@@ -37,11 +41,11 @@ namespace Awake.CoreServices.Packet
                         // TODO: implement custom admin commands here
                         client.Send(packet.Split('$')[1]);
                     } else {
-                        Utils.Warning($"User {client.Username} (with IP {client.IPAddress}) tried to execute \"{packet}\" without being admin.");
+                        OutputMessage.Warning($"User {client.Username} (with IP {client.IPAddress}) tried to execute \"{packet}\" without being admin.");
                     }
                     break;
                 default:
-                    Utils.Error($"Missing packet route for \"{packet}\" (Basics)");
+                    OutputMessage.Error($"Missing packet route for \"{packet}\" (Basics)");
                     break;
             }
         }
