@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,7 +18,7 @@ namespace Awake.CoreServices.Packet
             switch (client.Status) {
                 case ClientStatus.HC_Done:
                     if (packet.Length < 2) {
-                        Utils.Error($"Wrong protocol, custom client detected (at {client.IPAddress})");
+                        Utils.Warning($"Wrong protocol ({client.IPAddress})");
                         client.Disconnect();
                     } else {
                         switch (packet[0]) {

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Awake.CoreServices.Encryption;
+using Awake.DatabaseServices.Models;
 using Awake.NetworkServices;
 
 namespace Awake.CoreServices.Packet
@@ -33,7 +34,7 @@ namespace Awake.CoreServices.Packet
             char reason = 'n';
             char success = 'K'; // 'E' sinon
             char isAdmin = '1'; // '0' sinon
-            bool logged = true; // TODO: add DB fetch, check and notify user
+            bool logged = true; // TODO: add DB fetch, check and notify user, update client.Account.isLogged if true
 
             if (logged) {
                 client.Send("Al" + success + isAdmin);
@@ -43,7 +44,7 @@ namespace Awake.CoreServices.Packet
                 // client.Send("AQ" + questionSecrete.Replace(" ", "+"));
             } else {
                 client.Send("Al" + success + reason);
-                Utils.Log($"Wrong password attempt for {client.Username} ({client.IPAddress})"); // TODO: Gérer le nombre d'essais restants ?
+                Utils.Warning($"Wrong password attempt for {client.Username} ({client.IPAddress})"); // TODO: Gérer le nombre d'essais restants ?
                 client.Disconnect(); // TODO: peut-être que c'est pas nécessaire ?
             }
 
@@ -51,8 +52,13 @@ namespace Awake.CoreServices.Packet
         }
 
         public static void SendInfos(Client client) {
-            client.Send("Ad" + client.Username); // Account Pseudo
-            client.Send("Ac" + "0"); // Community ID
+            // TODO: fetch account from db and fill client.Account
+            client.Account = new DBAccount(0, client.Username, true);
+
+            client.Send("Ad" + client.Account.Name); // Account Pseudo
+            client.Send("Ac" + client.Account.Community); // Community ID
+
+            // TODO: Gérer les files d'attente
             client.Send("AH" + "1;1;0;1");  // Hosts nID;nState;nCompletion;bCanLog (separator '|') (permet d'avoir plusieurs serveurs avec du load balancing)
             // client.Send("Af" + "16|0|20|0|0"); // S'il y a une file d'attente : position|totalAbo|totalNonAbo|subscriber|queueID
         }

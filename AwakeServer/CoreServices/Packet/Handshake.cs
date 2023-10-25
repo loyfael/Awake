@@ -46,6 +46,9 @@ namespace Awake.CoreServices.Packet
                 case 'D':
                     client.Disconnect();
                     break;
+                default:
+                    Utils.Error($"Missing packet route for \"{packet}\" (Handshake)");
+                    break;
             }
         }
     }

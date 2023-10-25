@@ -38,7 +38,7 @@ namespace Awake.NetworkServices
 
 				while (AwakeServer.isRunning()) {
 					Utils.Debug("Waiting for new client...");
-					Socket clientSocket = ServerSocket.Accept(); // TODO: change to non-blocking to better handle gracefull stop
+					Socket clientSocket = ServerSocket.Accept(); // TODO: change to non-blocking to better handle gracefull stop ?
                     Client client = new Client(clientSocket);
 
 					Utils.Log($"New client: {client.ID} from {client.IPAddress}");

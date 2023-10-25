@@ -1,12 +1,15 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using Awake.CoreServices;
+using Awake.DatabaseServices.Models;
 using Awake.CoreServices.Encryption;
+using Awake.CoreServices.Packet;
 
 namespace Awake.NetworkServices
 {
@@ -28,6 +31,7 @@ namespace Awake.NetworkServices
         public string Password = ""; // Stocké sous la forme hash( hash(Password + SessionKey) )
         public string Version = "unknown";
         public string IPAddress = "unknown";
+        [AllowNull] public DBAccount Account = null;
 
 
         public Client(Socket socket) {
