@@ -26,14 +26,16 @@ namespace Awake.NetworkServices
         public Socket Socket;        // Socket utilisée pour parler au client
         public int ID;               // ID temporaire assigné au client (change à chaque connexion)
         public string SessionKey;    // TODO: discuss implementation and crypto
-
         public string Username = ""; // Username transmis par le client
         public string Password = ""; // Stocké sous la forme hash( hash(Password + SessionKey) )
         public string Version = "unknown";
         public string IPAddress = "unknown";
         [AllowNull] public DBAccount Account = null;
 
-
+        /// <summary>
+        /// À commenter
+        /// </summary>
+        /// <param name="socket"></param>
         public Client(Socket socket) {
             Socket = socket;
             ID = socket.GetHashCode();
@@ -45,11 +47,19 @@ namespace Awake.NetworkServices
             SessionKey = ClientKeyGenerator.GenerateKey();
         }
 
+        /// <summary>
+        /// Permet d'envoyer une réponse au client, s'agissant en
+        /// l'occurence d'un packet.
+        /// </summary>
+        /// <param name="packet"></param>
         public void Send(string packet) {
-            Utils.Debug(ID + " << " + packet);
+            OutputMessage.Debug(ID + " << " + packet);
             Socket.Send(Encoding.UTF8.GetBytes(packet + '\0'));
         }
 
+        /// <summary>
+        /// Permet de déconnecter le joueur
+        /// </summary>
         public void Disconnect() {
             if (Socket.Connected) {
                 Send("HD"); // On notifie la déconnexion au client
