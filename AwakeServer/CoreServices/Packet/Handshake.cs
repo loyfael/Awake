@@ -54,7 +54,7 @@ namespace Awake.CoreServices.Packet
             }
         }
 
-        public static void ProcessPacket(Client client, string packet) {
+        public static void HandshakeProcessPacket(Client client, string packet) {
             switch (packet[1]) {
                 case 'D':
                     client.Disconnect();
