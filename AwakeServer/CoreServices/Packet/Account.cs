@@ -30,6 +30,13 @@ namespace Awake.CoreServices.Packet
          *   'f' : Nom d'utilisateur ou mot de passe incorrect (avec lien vers le support, inutile ?)
          *    *  : Nom d'utilisateur ou mot de passe incorrect
          */
+
+         /// <summary>
+         /// Permet de logger le joueur et de vérifier si la connexion<br />
+         /// se passe sans erreurs. 
+         /// </summary>
+         /// <param name="client"></param>
+         /// <returns></returns>
         public static bool Login(Client client) {
             char reason = 'n';
             char success = 'K'; // 'E' sinon
@@ -44,13 +51,17 @@ namespace Awake.CoreServices.Packet
                 // client.Send("AQ" + questionSecrete.Replace(" ", "+"));
             } else {
                 client.Send("Al" + success + reason);
-                Utils.Warning($"Wrong password attempt for {client.Username} ({client.IPAddress})"); // TODO: Gérer le nombre d'essais restants ?
+                OutputMessage.Warning($"Wrong password attempt for {client.Username} ({client.IPAddress})"); // TODO: Gérer le nombre d'essais restants ?
                 client.Disconnect(); // TODO: peut-être que c'est pas nécessaire ?
             }
 
             return logged;
         }
 
+        /// <summary>
+        /// Envoyer les informations du client
+        /// </summary>
+        /// <param name="client"></param>
         public static void SendInfos(Client client) {
             // TODO: fetch account from db and fill client.Account
             client.Account = new DBAccount(0, client.Username, true);
@@ -63,10 +74,15 @@ namespace Awake.CoreServices.Packet
             // client.Send("Af" + "16|0|20|0|0"); // S'il y a une file d'attente : position|totalAbo|totalNonAbo|subscriber|queueID
         }
 
+        /// <summary>
+        /// Traiter le packet
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="packet"></param>
         public static void ProcessPacket(Client client, string packet) {
             switch (packet[1]) {
                 case 'f': // Get Queue
-                    // TODO
+                    
                     break;
 
                 case 'L': // Character List
@@ -88,14 +104,14 @@ namespace Awake.CoreServices.Packet
                         client.Send("AS" + character.ToGameString());
                     }
                     else {
-                        Utils.Warning($"Could not parse \"{sCharID}\" [Account]"); // could be undefined ?
+                        OutputMessage.Warning($"Could not parse \"{sCharID}\" [Account]"); // could be undefined ?
                         client.Send("ASE");
                         client.Disconnect();
                     }
                     break;
 
                 default:
-                    Utils.Error($"Missing packet route for \"{packet}\" [Account]");
+                    OutputMessage.Error($"Missing packet route for \"{packet}\" [Account]");
                     break;
             }
         }
