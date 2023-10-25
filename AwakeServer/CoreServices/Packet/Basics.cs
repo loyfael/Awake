@@ -34,7 +34,7 @@ namespace Awake.CoreServices.Packet
          // TODO: Soit plus explicite sur le nommage de tes méthodes si possibles
          // Et pense à les documenter en mettant un triple ///, cela m'aidera
          // dans la globalité du projet ^^ (je te réécrit ceci au cas échéant eheh)
-        public static void ProcessPacket(Client client, string packet) {
+        public static void BasicProcessPacket(Client client, string packet) {
             switch (packet[1]) {
                 case 'A':
                     if (client.Account.isAdmin) {
