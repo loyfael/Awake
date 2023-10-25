@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -27,6 +27,9 @@ namespace Awake.CoreServices.Packet
                                 break;
                             case 'H':
                                 Handshake.ProcessPacket(client, packet);
+                                break;
+                            case 'B':
+                                Basics.ProcessPacket(client, packet);
                                 break;
                             default:
                                 Utils.Error($"Missing packet route for \"{packet}\"");

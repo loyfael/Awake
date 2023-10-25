@@ -68,7 +68,34 @@ namespace Awake.CoreServices.Packet
                 case 'f': // Get Queue
                     // TODO
                     break;
+
                 case 'L': // Character List
+                    /*
+                     * Réponse : "AL" + bSuccess(inutilisé) + sExtraData
+                     * Format de sExtraData : <characterCount> | ID;Name;level;gfxID;color1;color2;color3;color4;color5;accessories;merchant;serverID;isDead;deathCount;lvlMax
+                     */
+
+                    string[] characters = client.Account.GetAllCharacters().Select(character => character.ToCharacterListString()).ToArray();
+                    string characterList = $"{characters.Length}|" + string.Join<string>("|", characters);
+                    client.Send("AL_" + characterList);
+                    break;
+
+                case 'S': // Select character
+                    // Réponse : "AS" + $"{ID}|{name}|{level}|{guild}|{sex}|{gfxID}|{color1}|{color2}|{color3}|{color4}|{color5}|{items}"
+                    string sCharID = packet.Remove(0,2);
+                    if (int.TryParse(sCharID, out int charID)) {
+                        DBCharacter character = client.Account.GetCharacterByID(charID); // TODO: handle errors
+                        client.Send("AS" + character.ToGameString());
+                    }
+                    else {
+                        Utils.Warning($"Could not parse \"{sCharID}\" [Account]"); // could be undefined ?
+                        client.Send("ASE");
+                        client.Disconnect();
+                    }
+                    break;
+
+                default:
+                    Utils.Error($"Missing packet route for \"{packet}\" [Account]");
                     break;
             }
         }

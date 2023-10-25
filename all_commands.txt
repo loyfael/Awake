@@ -1,0 +1,41 @@
+// Si le compte est admin, ctrl+² pour ouvrir la console
+
+/TOGGLESPRITES
+/INFOS
+/ZOOM nZoom x y
+/TIMERSCOUNT
+/VARS
+/MOUNT perso chevauchor     // (chevauchor pas présent dans le client)
+/SCALE x <y>
+/ANIM animID <time>
+/C
+    /C > pck   // envoyer un packet
+    /C < pck   // recevoir un packet
+/D
+    // même chose que /C, avec bNoCyphering=true
+/PING
+/MAPID
+/CELLID
+/TIME
+/CACHE
+/REBOOT
+/FPS
+/UI component  // ouvrir un composant UI
+/DEBUG
+/ASKOK
+/ASKOK2 text
+/MOVIECLIP
+/LOS cell1 cell2 // Line Of Sight (ank.battlefield.utils.Pathfinding.checkView(...))
+/CLEARCELL cellID
+/CELLINFO cellID
+/LANGFILE (file|TOTAL|LANG) // récupérer la taille du fichier lang
+/POINTSPRITE nGfxID
+/LISTSPRITES
+/LISTPICTOS
+/POINTPICTO nPictoID
+/SAVETHEWORLD
+/STOPSAVETHEWORLD
+/NEXTSAVE
+/SOMAPLAY sOldSoundID  // Play sound effect
+/VERIFYIDENTITY sKey // Vérifier si la clé est valide (deux checksum sont vérifiées)
+/MONSTER name // chercher le gfxID d'un monstre avec son nom
