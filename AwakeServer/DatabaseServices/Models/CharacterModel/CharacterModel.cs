@@ -7,96 +7,39 @@ using Awake.NetworkServices;
 
 namespace Awake.DatabaseServices.Models
 {
+    /// <summary>
+    ///     Cette classe représente un personnage, tel qu'il est stocké dans la base de données. <br/>
+    ///     Elle permet de faciliter la récupération de données et de faire l'interface entre la DB <br/>
+    ///     et le reste du serveur.
+    /// </summary>
     internal class DBCharacter
     {
         public int ID;
-        public string Name;
-        public int level;
-        public int gfxID; // 10/11 pour un perso (H/M), 12/13 pour un mini perso, 1001 pour un bouftou blanc (a tester?)
-        public string color1;
-        public string color2;
-        public string color3;
-        public string color4;
-        public string color5;
-        public string accessories; // nUnicID(hex) ~ nType(int) ~ nFrame(int) ,  // cheveux,4,,A,C
-        public int merchant; // Aura ?
-        public int serverID;
-        public int isDead;
-        public int deathCount;
-        public int lvlMax;
+        public string? Name;
+        public int Level;
+        public int GfxID; // 10/11 pour un perso (H/M), 12/13 pour un mini perso, 1001 pour un bouftou blanc (ca marche mdr)
+        public int Color1 = -1;
+        public int Color2 = -1;
+        public int Color3 = -1;
+        public int Color4 = -1;
+        public int Color5 = -1;
+        public string? Accessories; // nUnicID(hex) ~ nType(int) ~ nFrame(int) ,  // 8,4,,A,C pour avoir des cheveux(8), un chapeau (4) et une tenue (A,C)
+        public int merchant = 0; // Aura ?
+        public int serverID = 0;
+        public int isDead = 0;
+        public int deathCount = 0;
+        public int lvlMax = 0;
 
-        public string guild;
-        public CharacterSex sex;
-        private string items;
+        public CharacterSex Sex;
+        public string? Guild;
+        public string? Items;
 
         internal enum CharacterSex {
             Male = 0,
             Female = 1,
         }
 
-        // TODO: change to private, add a generator function
-        /// <summary>
-        /// Modèle de personnage
-        /// </summary>
-        /// <param name="iD"></param>
-        /// <param name="sex"></param>
-        /// <param name="name"></param>
-        /// <param name="level"></param>
-        /// <param name="gfxID"></param>
-        /// <param name="color1"></param>
-        /// <param name="color2"></param>
-        /// <param name="color3"></param>
-        /// <param name="color4"></param>
-        /// <param name="color5"></param>
-        /// <param name="accessories"></param>
-        /// <param name="merchant"></param>
-        /// <param name="serverID"></param>
-        /// <param name="isDead"></param>
-        /// <param name="deathCount"></param>
-        /// <param name="lvlMax"></param>
-        /// <param name="items"></param>
-        /// <param name="guild"></param>
-        public DBCharacter(
-            int iD,
-            CharacterSex sex,
-            string name,
-            int level,
-            int gfxID,
-            string color1,
-            string color2,
-            string color3,
-            string color4,
-            string color5,
-            string accessories,
-            int merchant,
-            int serverID,
-            int isDead,
-            int deathCount,
-            int lvlMax,
-            string items,
-            string guild
-        ) {
-            ID = iD;
-            Name = name;
-            this.level = level;
-            this.gfxID = gfxID;
-            this.color1 = color1;
-            this.color2 = color2;
-            this.color3 = color3;
-            this.color4 = color4;
-            this.color5 = color5;
-            this.accessories = accessories;
-            this.merchant = merchant;
-            this.serverID = serverID;
-            this.isDead = isDead;
-            this.deathCount = deathCount;
-            this.lvlMax = lvlMax;
-            this.guild = guild;
-            this.sex = sex;
-            this.items = items;
-        }
-
-        public string ToCharacterListString() => $"{ID};{Name};{level};{gfxID};{color1};{color2};{color3};{color4};{color5};{accessories};{merchant};{serverID};{isDead};{deathCount};{lvlMax}";
-        public string ToGameString() => $"{ID}|{Name}|{level}|{guild}|{(int) sex}|{gfxID}|{color1}|{color2}|{color3}|{color4}|{color5}|{items}";
+        public string ToCharacterListString() => $"{ID};{Name};{Level};{GfxID};{Color1:X};{Color2:X};{Color3:X};{Color4:X};{Color5:X};{Accessories};{merchant};{serverID};{isDead};{deathCount};{lvlMax}";
+        public string ToGameString() => $"{ID}|{Name}|{Level}|{Guild}|{(int) Sex}|{GfxID}|{Color1:X}|{Color2:X}|{Color3:X}|{Color4:X}|{Color5}|{Items}";
     }
 }

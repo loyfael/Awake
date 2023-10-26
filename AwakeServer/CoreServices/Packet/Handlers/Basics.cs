@@ -7,12 +7,12 @@ using Awake.CoreServices.Encryption;
 using Awake.DatabaseServices.Models;
 using Awake.NetworkServices;
 
-namespace Awake.CoreServices.Packet
+namespace Awake.CoreServices.Packet.Handlers
 {
     internal class Basics
     {
         /*
-         * Paquets à prendre en charge :
+         * Paquets correspondants :
          *
          * "B" // Basics
          *     "N" // Nop
@@ -29,17 +29,25 @@ namespace Awake.CoreServices.Packet
          *     "P"     this.aks.Basics.onSubscriberRestriction(sData.substr(2));
          *     "C"     this.aks.Basics.onFileCheck(sData.substr(2));
          *     "p"     this.aks.Basics.onAveragePing(sData.substr(2));
+         *
+         * TODO: supprimer au fur et à mesure de l'implémentation
          */
 
-         // TODO: Soit plus explicite sur le nommage de tes méthodes si possibles
-         // Et pense à les documenter en mettant un triple ///, cela m'aidera
-         // dans la globalité du projet ^^ (je te réécrit ceci au cas échéant eheh)
+        /// <summary>
+        ///     Permet de traiter les paquets de la catégorie Basic (commençant par un 'B'). <br/>
+        /// </summary>
+        /// <param name="client">
+        ///     Le client qui a envoyé le paquet, auquel on doit répondre.
+        /// </param>
+        /// <param name="packet">
+        ///     Le paquet envoyé par le client. La condition <b>packet.Length >= 2</b><br/>
+        ///     doit avoir été vérifiée avant d'appeler la fonction.
+        /// </param>
         public static void BasicProcessPacket(Client client, string packet) {
             switch (packet[1]) {
                 case 'A':
-                    if (client.Account.isAdmin) {
+                    if (client.Account.IsAdmin) {
                         // TODO: implement custom admin commands here
-                        client.Send(packet.Split('$')[1]);
                     } else {
                         OutputMessage.Warning($"User {client.Username} (with IP {client.IPAddress}) tried to execute \"{packet}\" without being admin.");
                     }

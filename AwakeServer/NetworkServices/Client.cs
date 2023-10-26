@@ -66,6 +66,7 @@ namespace Awake.NetworkServices
             }
 
             Socket.Close();
+            OutputMessage.Log("Client disconnected: " + ID);
             SocketHandler.RemoveClientByID(ID);
         }
     }

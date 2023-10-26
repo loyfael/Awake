@@ -9,6 +9,7 @@ using Awake.CoreServices;
 using Awake.CoreServices.Packet;
 using System.Net.NetworkInformation;
 using DotNetEnv;
+using Awake.CoreServices.Packet.Handlers;
 
 namespace Awake.NetworkServices
 {
@@ -108,7 +109,6 @@ namespace Awake.NetworkServices
 								PacketManager.ProcessPacket(currentClient, packet);
 							}
 						} else {
-							OutputMessage.Log("Client disconnected: " + currentClient.ID);
 							currentClient.Disconnect();
 						}
 					}

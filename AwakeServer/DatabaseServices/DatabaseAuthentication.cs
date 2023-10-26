@@ -21,9 +21,9 @@ namespace Awake.DatabaseServices
         }
 
         /// <summary>
-        /// Permet d'ouvrir la connexion à la base de données.<br />
-        /// La méthode récupère les crédentials présent dans le fichier<br />
-        /// .env se trouvant à la racine du projet.
+        ///     Permet d'ouvrir la connexion à la base de données. <br/>
+        ///     La méthode récupère les crédentials présent dans le fichier <br/>
+        ///     .env se trouvant à la racine du projet.
         /// </summary>
         public void OpenConnection()
         {
