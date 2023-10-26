@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg version="1.1" id="Layer_1"
+xmlns="http://www.w3.org/2000/svg"
+xmlns:xlink="http://www.w3.org/1999/xlink"
+width="100px" height="8px"
+xml:space="preserve">
+<g id="PathID_1" transform="matrix(1, 0, 0, 1, -2, -2)">
+<path style="fill:#FF00FF;fill-opacity:1" d="M2 2L102 2L102 10L2 10L2 2" />
+</g>
+</svg>
