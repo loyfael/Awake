@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -37,6 +37,9 @@ namespace Awake.CoreServices.Packet
                                 break;
                             case 'B':
                                 Basics.BasicProcessPacket(client, packet);
+                                break;
+                            case 'G':
+                                Game.GameProcessPacket(client, packet);
                                 break;
                             default:
                                 OutputMessage.Error($"Missing packet route for \"{packet}\" [PacketManager]");
