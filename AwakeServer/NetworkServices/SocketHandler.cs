@@ -13,6 +13,13 @@ using Awake.CoreServices.Packet.Handlers;
 
 namespace Awake.NetworkServices
 {
+	/// <summary>
+	/// 	Cette classe a pour but d'abstraire le principe de Socket, <br/>
+	/// 	et permet de gérer les connexions avec les clients ainsi <br/>
+	/// 	que la réception de nouveaux messages. Quand un message est <br/>
+	/// 	reçu d'un Client, il est transformé en string et est envoyé <br/>
+	/// 	au PacketManager, via sa fonction ProcessPacket.
+	/// </summary>
     internal class SocketHandler {
 
         private const int BUFFER_SIZE = 1024;
@@ -23,7 +30,10 @@ namespace Awake.NetworkServices
 		private static Dictionary<int, Client> AllClients = new();
 
 		/// <summary>
-		/// Démarrer le socket de l'application
+		/// 	Démarre la gestion des sockets, en créant deux threads différents. <br/>
+		/// 	Le premier va gérer la connexion de nouveaux clients, tandis que le <br/>
+		/// 	second exécute la fonction processClients pour intéragir avec les <br/>
+		/// 	clients déjà connectés. 
 		/// </summary>
 		public static void Start() {
 			try {
@@ -58,9 +68,9 @@ namespace Awake.NetworkServices
 
 		
 		/// <summary>
-		/// Cette méthode est exécutée dans un thread à part. Elle surveille les sockets</br>
-		/// des clients pour savoir s'ils tentent d'envoyer un paquet, et redirige le</br>
-		/// paquet vers le PacketManager.
+		/// 	Cette méthode est exécutée dans un thread à part. Elle surveille les sockets <br/>
+		/// 	des clients pour savoir s'ils tentent d'envoyer un paquet, et redirige le <br/>
+		/// 	paquet vers le PacketManager.
 		/// </summary>
 		private static void processClients() {
 			List<Socket> readList = new();
@@ -75,9 +85,9 @@ namespace Awake.NetworkServices
 				if (readList.Count > 0) {
 					try {
 						Socket.Select(readList, null, null, SELECT_TIMEOUT);
-					} catch (ObjectDisposedException) {
+					} catch (Exception e) when (e is ObjectDisposedException || e is KeyNotFoundException) {
 						/* 
-						 * Ce cas peut arriver à cause d'une racing condition entre
+						 * Ce cas peut arriver à cause d'une race condition entre
 						 * la lecture de AllClients.Values et le remplissage de la
 						 * readList. Lors du prochain tour de boucle, le client ne
 						 * devrait plus faire partie de AllClients.
@@ -85,6 +95,7 @@ namespace Awake.NetworkServices
 						 * TODO: identifier le mauvais client et traiter les autres
 						 * paquets, possibilité de DOS avec un client bien timé
 						 */
+						OutputMessage.Warning("ObjectDisposedException or KeyNotFoundException [SocketHandler]");
 
 						Thread.Sleep(10);
 						continue;
@@ -109,6 +120,7 @@ namespace Awake.NetworkServices
 								PacketManager.ProcessPacket(currentClient, packet);
 							}
 						} else {
+							OutputMessage.Debug($"Client {currentClient.ID} closed connexion.");
 							currentClient.Disconnect();
 						}
 					}
@@ -117,13 +129,26 @@ namespace Awake.NetworkServices
 			}
 		}
 
-        public static void StopServer() {
+		/// <summary>
+		/// 	Arrête le SocketHandler en déconnectant tous les clients pour <br/>
+		/// 	fermer toutes les sockets.
+		/// </summary>
+        public static void Stop() {
 			foreach(Client client in AllClients.Values) {
 				client.Disconnect();
 			}
 			ServerSocket.Close();
         }
 
+		/// <summary>
+		/// 	Récupère un client par son ID.
+		/// </summary>
+		/// <param name="id">
+		/// 	L'identifiant du client.
+		/// </param>
+		/// <returns>
+		/// 	L'objet Client associé à l'ID, ou une KeyNotFoundException.
+		/// </returns>
 		public static Client GetClientByID(int id) {
 			return AllClients[id];
 		}

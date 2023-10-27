@@ -20,6 +20,11 @@ namespace Awake.NetworkServices
         HC_Done
     }
 
+    /// <summary>
+    ///     Cette classe permet de gérer une connexion avec un client. Elle <br/>
+    ///     ajoute une abstraction de la notion de socket et permet de stocker <br/>
+    ///     diverses informations transmises par le client, ainsi que son état.
+    /// </summary>
     internal class Client
     {
         public ClientStatus Status;  // Statut actuel du client
@@ -33,9 +38,11 @@ namespace Awake.NetworkServices
         [AllowNull] public DBAccount Account = null;
 
         /// <summary>
-        /// À commenter
+        ///     Constructeur pour la classe Client.
         /// </summary>
-        /// <param name="socket"></param>
+        /// <param name="socket">
+        ///     La socket associée à la connexion.
+        /// </param>
         public Client(Socket socket) {
             Socket = socket;
             ID = socket.GetHashCode();
@@ -48,17 +55,18 @@ namespace Awake.NetworkServices
         }
 
         /// <summary>
-        /// Permet d'envoyer une réponse au client, s'agissant en
-        /// l'occurence d'un packet.
+        ///     Envoie un packet au client.
         /// </summary>
-        /// <param name="packet"></param>
+        /// <param name="packet">
+        ///     Le packet à envoyer.
+        /// </param>
         public void Send(string packet) {
             OutputMessage.Debug(ID + " << " + packet);
             Socket.Send(Encoding.UTF8.GetBytes(packet + '\0'));
         }
 
         /// <summary>
-        /// Permet de déconnecter le joueur
+        ///     Déconnecte le joueur, ferme et supprime la connexion.
         /// </summary>
         public void Disconnect() {
             if (Socket.Connected) {

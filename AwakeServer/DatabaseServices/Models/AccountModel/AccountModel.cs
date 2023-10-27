@@ -41,10 +41,10 @@ namespace Awake.DatabaseServices.Models
         ///     L'ID du personnage que l'on veut récupérer.
         /// </param>
         /// <returns>
-        ///     Le personnage voulu.
+        ///     Le personnage voulu, ou KeyNotFoundException si l'ID n'est pas présent.
         /// </returns>
         public DBCharacter GetCharacterByID(int charID) {
-            return Characters[charID]; // TODO: j'ai mis par index et non par ID, regarder si c'était bien ça ou s'il faut changer pour l'ID. Ajouter des bounds checks
+            return Characters[charID];
         }
 
         /// <summary>

@@ -8,12 +8,16 @@ using Awake.NetworkServices;
 
 namespace Awake.CoreServices.Packet
 {
+    /// <summary>
+    ///     Cette classe est le point d'entrée de la gestion des paquets. <br/>
+    ///     Elle permet de rediriger le traitement vers le bon Handler.
+    /// </summary>
     internal class PacketManager
     {
         /// <summary>
         ///     Cette méthode est appelée par le SocketHandler lorsqu'un paquet est <br/>
         ///     reçu de la part d'un client. Elle permet de rediriger le traitement <br/>
-        ///     vers le bon PacketHandler.
+        ///     vers le bon Handler.
         /// </summary>
         /// <param name="client">
         ///     Le client qui a envoyé le paquet, auquel on doit répondre.

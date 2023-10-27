@@ -55,7 +55,7 @@ namespace Awake
 
 			serverInstance.running = false;
 			dbConnect.CloseConnection();
-			SocketHandler.StopServer();
+			SocketHandler.Stop();
 			OutputMessage.Log("Server stopped.");
 		}
 	}

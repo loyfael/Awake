@@ -209,6 +209,21 @@ namespace Awake.CoreServices.Packet.Handlers
                     }
                     break;
 
+                case 'A': // Add character
+                    // Format du paquet à parser: "AA" sName "|" nClass "|" nSex "|" nColor1 "|" nColor2 "|" nColor3 "|" nColor4 "|" nColor5 "|1|" nHairCut
+
+                    /*
+                     * Format de réponse : "AA" + success('K' ou 'E') + reason
+                     * 
+                     * Raisons de refuser la création d'un personnage:
+                     *  's' : SUBSCRIPTION_OUT (inutile)
+                     *  'f' : "Le nombre maximum de personnages est atteint sur ton compte."
+                     *  'a' : "Ce nom n\'est pas disponible."
+                     *  'n' : "Le nom du personnage est incorrect." // TODO: voir dofus.utils.nameChecker.rules.NameCheckerCharacterNameRules pour les règles associées
+                     */
+
+                    break;
+
                 default:
                     OutputMessage.Error($"Missing packet route for \"{packet}\" [Account]");
                     break;

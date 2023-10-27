@@ -9,7 +9,7 @@ using DotNetEnv;
 namespace Awake.CoreServices
 {
     /// <summary>
-    /// Permet de gérer les couleurs au sein de la console.
+    ///     Permet de gérer les couleurs au sein de la console.
     /// </summary>
     internal static class Colors {
         public static readonly string Red = "\u001b[31m";
@@ -22,7 +22,7 @@ namespace Awake.CoreServices
     }
 
     /// <summary>
-    /// Permet de gérer les couleurs au sein de la console.
+    ///     Permet de gérer niveaux de log au sein de la console.
     /// </summary>
     internal static class LogLevel {
         public static readonly string Info    = $"[{Colors.Bold}{Colors.White}Info{Colors.Reset}]\t{Colors.White}";
@@ -32,8 +32,8 @@ namespace Awake.CoreServices
     }
 
     /// <summary>
-    /// Permet de gérer les logs retournés par l'application.</br>
-    /// que ce soit des erreurs, réussites, infos, debug..
+    ///     Permet de gérer les logs retournés par l'application. <br/>
+    ///     que ce soit des erreurs, réussites, infos, debug..
     /// </summary>
     internal class OutputMessage
     {
@@ -42,7 +42,7 @@ namespace Awake.CoreServices
         }
 
         /// <summary>
-        /// Message de log (simple)
+        ///     Message de log (simple)
         /// </summary>
         /// <param name="msg"></param>
         public static void Log(object msg) {
@@ -50,7 +50,7 @@ namespace Awake.CoreServices
         }
 
         /// <summary>
-        /// Message de debug
+        ///     Message de debug
         /// </summary>
         /// <param name="msg"></param>
         public static void Debug(object msg) {
@@ -60,7 +60,7 @@ namespace Awake.CoreServices
         }
 
         /// <summary>
-        /// Message d'erreur
+        ///     Message d'erreur
         /// </summary>
         /// <param name="msg"></param>
         public static void Error(object msg) {
@@ -68,7 +68,7 @@ namespace Awake.CoreServices
         }
 
         /// <summary>
-        /// Message de warn
+        ///     Message de warn
         /// </summary>
         /// <param name="msg"></param>
         public static void Warning(object msg) {
