@@ -36,6 +36,7 @@ namespace Awake.NetworkServices
         public string Version = "unknown";
         public string IPAddress = "unknown";
         [AllowNull] public DBAccount Account = null;
+        [AllowNull] public DBCharacter SelectedCharacter = null;
 
         /// <summary>
         ///     Constructeur pour la classe Client.

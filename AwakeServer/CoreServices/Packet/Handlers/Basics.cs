@@ -48,9 +48,18 @@ namespace Awake.CoreServices.Packet.Handlers
                 case 'A':
                     if (client.Account.IsAdmin) {
                         // TODO: implement custom admin commands here
+
+                        if (packet.Contains('$')) { // Commande temporaire pour aider au reverse, permet d'envoyer un paquet précis en commançant la commande par un '$'
+                            client.Send(packet.Split('$')[1]);
+                        }
                     } else {
                         OutputMessage.Warning($"User {client.Username} (with IP {client.IPAddress}) tried to execute \"{packet}\" without being admin.");
                     }
+                    break;
+                case 'D': // Get Date
+                    DateTime now = DateTime.Now;
+                    client.Send($"BD{now.Year}|{now.Month}|{now.Day}");
+                    // client.Send("BT" + now.Ticks);
                     break;
                 default:
                     OutputMessage.Error($"Missing packet route for \"{packet}\" (Basics)");

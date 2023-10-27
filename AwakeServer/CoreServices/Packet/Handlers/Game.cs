@@ -76,6 +76,7 @@ namespace Awake.CoreServices.Packet.Handlers
                     // TODO: Handle possible errors (if any?)
                     // Réponse: "GC" + success("K" ou "E") + * + type(error if not equal to TYPE_SOLO=1)
                     client.Send("GCK_1");
+                    Account.SendStats(client, client.SelectedCharacter);
                     break;
                 default:
                     OutputMessage.Error($"Missing packet route for \"{packet}\" (Game)");

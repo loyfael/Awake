@@ -22,7 +22,7 @@ namespace Awake.DatabaseServices.Models
         public int Community = 0;
         public bool IsAdmin = false;
         public bool IsLogged = false;
-        public List<DBCharacter> Characters = new List<DBCharacter>();
+        public Dictionary<int, DBCharacter> Characters = new();
 
         /// <summary>
         ///     Récupérer tout les personnages d'un compte.
@@ -30,8 +30,8 @@ namespace Awake.DatabaseServices.Models
         /// <returns>
         ///     La liste de DBCharacters
         /// </returns>
-        public List<DBCharacter> GetAllCharacters() {
-            return Characters;
+        public IEnumerable<DBCharacter> GetAllCharacters() {
+            return Characters.Values;
         }
 
         /// <summary>

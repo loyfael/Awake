@@ -71,7 +71,7 @@ namespace Awake.CoreServices.Packet.Handlers
         /// <param name="character">
         ///     Le personnage en question.
         /// </param>
-        public void SendStats(Client client, DBCharacter character) {
+        public static void SendStats(Client client, DBCharacter character) {
             /* 
              * Réponse à fournir :
              *        -------- XP ---------                                               alignement/fakeAlignment  ----------------Rank----------------
@@ -140,21 +140,27 @@ namespace Awake.CoreServices.Packet.Handlers
                 ID = 0,
                 Name = client.Username,
                 IsAdmin = true,
-                Characters = new List<DBCharacter> {
-                    new DBCharacter {
-                        ID = 0,
-                        Sex = DBCharacter.CharacterSex.Male,
-                        Name = "Test Character",
-                        Level = 999,
-                        GfxID = 10,
-                        Accessories = "8,4,,A,C"
+                Characters = new Dictionary<int, DBCharacter> {
+                    { 
+                        100,
+                        new DBCharacter {
+                            ID = 100,
+                            Sex = DBCharacter.CharacterSex.Male,
+                            Name = "Test Character",
+                            Level = 999,
+                            GfxID = 10,
+                            Accessories = "8,4,,A,C"
+                        }
                     },
-                    new DBCharacter {
-                        ID = 1,
-                        Sex = DBCharacter.CharacterSex.Male,
-                        Name = "Bouftou",
-                        Level = 1,
-                        GfxID = 1001
+                    {
+                        101,
+                        new DBCharacter {
+                            ID = 101,
+                            Sex = DBCharacter.CharacterSex.Male,
+                            Name = "Bouftou",
+                            Level = 1,
+                            GfxID = 1001
+                        }
                     }
                 }
             };
@@ -163,6 +169,18 @@ namespace Awake.CoreServices.Packet.Handlers
             client.Send("Ac" + client.Account.Community); // Community ID
 
             client.Send("AH" + "1;1;0;1");  // Hosts nID;nState;nCompletion;bCanLog (separator '|') (permet d'avoir plusieurs serveurs avec du load balancing)
+        }
+
+        /// <summary>
+        ///     Permet d'envoyer à un client la liste des personnages de son compte.
+        /// </summary>
+        /// <param name="client">
+        ///     Le client auquel envoyer la liste.
+        /// </param>
+        public static void SendCharacterList(Client client) {
+            string[] characters = client.Account.GetAllCharacters().Select(character => character.ToCharacterListString()).ToArray();
+            string characterList = $"{characters.Length}|" + string.Join<string>("|", characters);
+            client.Send("AL_" + characterList);
         }
 
         /// <summary>
@@ -181,7 +199,7 @@ namespace Awake.CoreServices.Packet.Handlers
                     // Réponse : "Af" + position|totalAbo|totalNonAbo|subscriber|queueID
                     
                     // TODO: Gérer les files d'attente
-                    // client.Send("Af" + "16|0|20|0|0");
+                       // client.Send("Af" + "16|0|20|0|0");
                     break;
 
                 case 'L': // Character List
@@ -189,21 +207,35 @@ namespace Awake.CoreServices.Packet.Handlers
                      * Réponse : "AL" + bSuccess(inutilisé) + sExtraData
                      * Format de sExtraData : <characterCount> | ID;Name;level;gfxID;color1;color2;color3;color4;color5;accessories;merchant;serverID;isDead;deathCount;lvlMax
                      */
-
-                    string[] characters = client.Account.GetAllCharacters().Select(character => character.ToCharacterListString()).ToArray();
-                    string characterList = $"{characters.Length}|" + string.Join<string>("|", characters);
-                    client.Send("AL_" + characterList);
+                    
+                    SendCharacterList(client);
                     break;
 
                 case 'S': // Select character
-                    // Réponse : "AS" + $"{ID}|{name}|{level}|{guild}|{sex}|{gfxID}|{color1}|{color2}|{color3}|{color4}|{color5}|{items}"
+                    // Réponse : "AS" + success('E' ou 'K') + '_' + $"{ID}|{name}|{level}|{guild}|{sex}|{gfxID}|{color1}|{color2}|{color3}|{color4}|{color5}|{items}"
                     string sCharID = packet.Remove(0,2);
-                    if (int.TryParse(sCharID, out int charID)) {
-                        DBCharacter character = client.Account.GetCharacterByID(charID); // TODO: handle errors
-                        client.Send("AS" + character.ToGameString());
-                    }
-                    else {
-                        OutputMessage.Warning($"Could not parse \"{sCharID}\" [Account]"); // TODO: si undefined -> renvoyer vers l'écran de sélection des personnages
+                    if (client.SelectedCharacter == null) {
+                        if (int.TryParse(sCharID, out int charID)) {
+                            try {
+                                DBCharacter character = client.Account.GetCharacterByID(charID);
+                                client.SelectedCharacter = character;
+                                client.Send("ASK_" + character.ToGameString());
+                            } catch (KeyNotFoundException) {
+                                OutputMessage.Warning($"Client {client.ID} asked for a character he doesn't have [Account]");
+                                client.Send("ASE");
+                                client.Disconnect();
+                            }
+                        } else {
+                            if (sCharID == "undefined") {
+                                SendCharacterList(client);
+                            } else {
+                                OutputMessage.Warning($"Could not parse {sCharID} [Account]");
+                                client.Send("ASE");
+                                client.Disconnect();
+                            }
+                        }
+                    } else {
+                        OutputMessage.Warning($"Client {client.ID} tried to select another character [Account]");
                         client.Send("ASE");
                         client.Disconnect();
                     }
