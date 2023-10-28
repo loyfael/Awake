@@ -144,8 +144,7 @@ namespace Awake.CoreServices.Packet.Handlers
                             Sex = DBCharacter.CharacterSex.Male,
                             Name = "Test Character",
                             Level = 999,
-                            GfxID = 10,
-                            Accessories = "8,4,,A,C"
+                            GfxID = 10
                         }
                     },
                     {

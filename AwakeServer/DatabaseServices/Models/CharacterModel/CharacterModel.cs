@@ -18,23 +18,29 @@ namespace Awake.DatabaseServices.Models
         public int Color3 = -1;
         public int Color4 = -1;
         public int Color5 = -1;
-        public string? Accessories; // nUnicID(hex) ~ nType(int) ~ nFrame(int) ,  // 8,4,,A,C pour avoir des cheveux(8), un chapeau (4) et une tenue (A,C)
+        public string Accessories = "4,,A,C"; // nUnicID(hex) ~ nType(int) ~ nFrame(int) ,  // 4,,A,C pour avoir un chapeau (4) et une tenue (A,C)
         public int merchant = 0; // Aura ?
         public int serverID = 0;
         public int isDead = 0;
         public int deathCount = 0;
         public int lvlMax = 0;
 
-        public CharacterSex Sex;
         public string? Guild;
         public string? Items;
 
+        public CharacterSex Sex;
         internal enum CharacterSex {
             Male = 0,
             Female = 1,
         }
 
-        public string ToCharacterListString() => $"{ID};{Name};{Level};{GfxID};{Color1:X};{Color2:X};{Color3:X};{Color4:X};{Color5:X};{Accessories};{merchant};{serverID};{isDead};{deathCount};{lvlMax}";
+        public HairStyle Hair = HairStyle.TypeA;
+        internal enum HairStyle {
+            TypeA = 8,
+            TypeB = 9
+        }
+
+        public string ToCharacterListString() => $"{ID};{Name};{Level};{GfxID};{Color1:X};{Color2:X};{Color3:X};{Color4:X};{Color5:X};{(int)Hair},{Accessories};{merchant};{serverID};{isDead};{deathCount};{lvlMax}";
         public string ToGameString() => $"{ID}|{Name}|{Level}|{Guild}|{(int) Sex}|{GfxID}|{Color1:X}|{Color2:X}|{Color3:X}|{Color4:X}|{Color5}|{Items}";
     }
 }
