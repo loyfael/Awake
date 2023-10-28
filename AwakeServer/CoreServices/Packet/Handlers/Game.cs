@@ -1,11 +1,6 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Awake.CoreServices.Encryption;
-using Awake.DatabaseServices.Models;
 using Awake.NetworkServices;
+using Awake.Utils;
 
 namespace Awake.CoreServices.Packet.Handlers
 {

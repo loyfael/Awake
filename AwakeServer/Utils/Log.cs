@@ -1,12 +1,7 @@
 using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using DotNetEnv;
 
-namespace Awake.CoreServices
+namespace Awake.Utils
 {
     /// <summary>
     ///     Permet de gérer les couleurs au sein de la console.
