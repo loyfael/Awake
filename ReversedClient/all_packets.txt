@@ -163,7 +163,7 @@
     "M"     this.aks.Infos.onInfoMaps(sData.substr(2));
     "C"     this.aks.Infos.onInfoCompass(sData.substr(2));
     "H"     this.aks.Infos.onInfoCoordinatespHighlight(sData.substr(2));
-    "m"     this.aks.Infos.onMessage(sData.substr(2));
+    "m"     this.aks.Infos.onMessage(sData.substr(2)); // TODO: on connection send "Im189" for "Bienvenue dans les plaines d'Emrub, sur l'île cachée des Eliatropes les plus malins du monde des douze. \n \nRappel : prenez garde, il est interdit de transmettre votre identifiant de connexion ainsi que votre mot de passe."
     "Q"     this.aks.Infos.onQuantity(sData.substr(2));
     "O"     this.aks.Infos.onObject(sData.substr(2));
     "L" // Life

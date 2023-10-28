@@ -463,10 +463,10 @@ if (!dofus.aks.Game)
     _loc1.onMapData = function (sExtraData)
     {
         var _loc3 = sExtraData.split("|");
-        var _loc4 = _loc3[0];
+        var mapID = _loc3[0];
         var _loc5 = _loc3[1];
         var _loc6 = _loc3[2];
-        if (Number(_loc4) == this.api.datacenter.Map.id)
+        if (Number(mapID) == this.api.datacenter.Map.id)
         {
             if (!this.api.datacenter.Map.bOutdoor)
             {
@@ -476,8 +476,8 @@ if (!dofus.aks.Game)
             return;
         } // end if
         this.api.gfx.showContainer(false);
-        this.nLastMapIdReceived = _global.parseInt(_loc4, 10);
-        this.api.kernel.MapsServersManager.loadMap(_loc4, _loc5, _loc6);
+        this.nLastMapIdReceived = _global.parseInt(mapID, 10);
+        this.api.kernel.MapsServersManager.loadMap(mapID, _loc5, _loc6);
     };
     _loc1.onMapLoaded = function ()
     {
